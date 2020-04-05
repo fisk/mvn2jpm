@@ -1,5 +1,6 @@
 package org.jpm.mvn2jpm;
 
+import java.util.ArrayList;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -38,7 +39,6 @@ public class Main {
             } return null;
         }
     }
-
 
     public static String getJpmVersion(String mvnVersion) {
         int major = 0;
@@ -110,6 +110,7 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
+        var jars = new ArrayList<String>();
         for (var arg: args) {
             var artifacts = Maven.resolver().resolve(arg).withTransitivity().as(MavenResolvedArtifact.class);
             for (var artifact: artifacts) {
@@ -124,8 +125,11 @@ public class Main {
                 Files.write(jpmPath, jpmFile.getBytes());
                 Cmd.run("jar --update --file " + newJar.toString() + " -C " + tempDir + " META-INF/jpm/main.jpm");
                 Cmd.run("jar --update --file " + newJar.toString() + " --module-version " + getJpmVersion(artifact.getResolvedVersion()));
-                Cmd.run("jpm publish " + newJar.toString());
+                jars.add(newJar.toString());
             }
+        }
+        if (!jars.isEmpty()) {
+            Cmd.run("jpm publish " + String.join(" ", jars));
         }
     }
 }
