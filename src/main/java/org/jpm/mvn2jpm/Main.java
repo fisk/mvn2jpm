@@ -110,6 +110,11 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
+        if (args.length == 0) {
+            System.out.println("Usage: mvn2jpm <artifacts>");
+            System.out.println("  Each artifact is a maven coordinate");
+            return;
+        }
         var jars = new ArrayList<String>();
         for (var arg: args) {
             var artifacts = Maven.resolver().resolve(arg).withTransitivity().as(MavenResolvedArtifact.class);
