@@ -4,6 +4,6 @@ This tool takes mvn coordinates, downloads the JAR, and publishes a JPM compatib
 
 Usage: 
 
-$ ./mvn2jpm.sh <artifacts>
+$ ./mvn2jpm.sh &lt;artifacts&gt;
 
-Where <artifacts> is a list of mvn coordinates.
+Where &lt;artifacts&gt; is a list of mvn coordinates.
